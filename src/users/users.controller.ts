@@ -1,4 +1,4 @@
-import { Controller, Get} from '@nestjs/common';
+import { Controller, Delete, Get, Post, Put, Delete } from '@nestjs/common';
 
 @Controller('api/v1/users')
 export class UsersController {
@@ -29,4 +29,25 @@ export class UsersController {
             'Stan Lee',
         ]
     }
+
+    @Post()
+    store(): string {
+        return 'This action adds a new user';
+    }
+
+    @Get(':id')
+    show(): string {
+        return 'This action returns a specific user';
+    }
+
+    @Put(':id')
+    update(): string {
+        return 'This action updates a specific user';
+    }
+
+    @Delete(':id')
+    destroy(): string {
+        return 'This action removes a specific user';
+    }
+
 }
