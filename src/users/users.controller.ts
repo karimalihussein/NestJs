@@ -1,4 +1,5 @@
-import { Controller, Delete, Get, Post, Put, Delete } from '@nestjs/common';
+import { Controller, Delete, Get, Post, Put, Req } from '@nestjs/common';
+import { Request } from 'express';
 
 @Controller('api/v1/users')
 export class UsersController {
@@ -31,9 +32,12 @@ export class UsersController {
     }
 
     @Post()
-    store(): string {
+    store(@Req() req: Request): string {
+        console.log(req);
         return 'This action adds a new user';
     }
+
+   
 
     @Get(':id')
     show(): string {
