@@ -2,45 +2,32 @@ import { Controller, Delete, Get, Post, Put, Patch, Req, Param, Body } from '@ne
 import { Request } from 'express';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
+import { UserEntity } from './user.entity';
+import { v4 as uuid } from 'uuid';
 
 @Controller('api/v1/users')
 export class UsersController {
+
+    private readonly users: UserEntity[] = [];
+
     @Get()
-    index(): string[] {
-        return [
-            'John Doe',
-            'Omar Sy',
-            'Lupita Nyong\'o',
-            'Chadwick Boseman',
-            'Daniel Kaluuya',
-            'Letitia Wright',
-            'Winston Duke',
-            'Angela Bassett',
-            'Forest Whitaker',
-            'Andy Serkis',
-            'Martin Freeman',
-            'Michael B. Jordan',
-            'Danai Gurira',
-            'Sterling K. Brown',
-            'Florence Kasumba',
-            'John Kani',
-            'Sydelle Noel',
-            'Isaach De Bankolé',
-            'Connie Chiume',
-            'David S. Lee',
-            'Nabiyah Be',
-            'Stan Lee',
-        ]
+    index(): UserEntity[] 
+    {
+        return this.users;
     }
 
     @Post()
-    store(@Body() CreateUserDto: CreateUserDto) {
-        return CreateUserDto.name;
+    store(@Body() CreateUserDto: CreateUserDto) 
+    {
+        const user : UserEntity = {id: uuid(),...CreateUserDto};
+        this.users.push(user);
+        return user;
     }
 
     @Get(':id')
-    show(@Param('id') id: Number): string {
-        return `This action returns a #${id} user`;
+    show(@Param('id') id: string) : UserEntity
+    {
+        return this.users.find(user => user.id === id);
     }
 
 
