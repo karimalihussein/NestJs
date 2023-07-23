@@ -18,7 +18,7 @@ export class UsersController {
 
     @Post()
     @HttpCode(HttpStatus.CREATED)
-    store(@Body(ValidationPipe) CreateUserDto: CreateUserDto) {
+    store(@Body(new ValidationPipe({whitelist: true, forbidNonWhitelisted: true})) CreateUserDto: CreateUserDto) {
         const user: UserEntity = { id: uuid(), ...CreateUserDto };
         this.users.push(user);
         return user;
