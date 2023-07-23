@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Post, Put, Patch, Req, Param, Body, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Delete, Get, Post, Put, Patch, Req, Param, Body, HttpCode, HttpStatus, ParseUUIDPipe } from '@nestjs/common';
 import { Request } from 'express';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
@@ -26,14 +26,14 @@ export class UsersController {
 
     @Get(':id')
     @HttpCode(HttpStatus.OK)
-    show(@Param('id') id: string): UserEntity {
+    show(@Param('id', ParseUUIDPipe) id): UserEntity {
         return this.users.find(user => user.id === id);
     }
 
 
     @Patch(':id')
     @HttpCode(HttpStatus.ACCEPTED)
-    update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): UserEntity {
+    update(@Param('id', ParseUUIDPipe) id: string, @Body() updateUserDto: UpdateUserDto): UserEntity {
         const user = this.users.find(user => user.id === id);
         Object.assign(user, updateUserDto);
         return user;
@@ -41,7 +41,7 @@ export class UsersController {
 
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
-    destroy(@Param('id') id: string): void {
+    destroy(@Param('id', ParseUUIDPipe) id: string): void {
         const userIndex = this.users.findIndex(user => user.id === id);
         this.users.splice(userIndex, 1);
     }
