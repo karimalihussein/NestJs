@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Post, Put, Patch, Req, Param } from '@nestjs/common';
+import { Controller, Delete, Get, Post, Put, Patch, Req, Param, Body } from '@nestjs/common';
 import { Request } from 'express';
 
 @Controller('api/v1/users')
@@ -32,8 +32,8 @@ export class UsersController {
     }
 
     @Post()
-    store(@Req() req: Request): string {
-        return 'This action adds a new user';
+    store(@Body() data: any) {
+        return data;
     }
 
     @Get(':id')
