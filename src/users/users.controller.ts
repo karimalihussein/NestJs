@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Post, Put, Req } from '@nestjs/common';
+import { Controller, Delete, Get, Post, Put, Patch, Req, Param } from '@nestjs/common';
 import { Request } from 'express';
 
 @Controller('api/v1/users')
@@ -33,25 +33,25 @@ export class UsersController {
 
     @Post()
     store(@Req() req: Request): string {
-        console.log(req);
         return 'This action adds a new user';
     }
 
-   
-
     @Get(':id')
-    show(): string {
-        return 'This action returns a specific user';
+    show(@Param('id') id: Number): string {
+        return `This action returns a #${id} user`;
     }
 
-    @Put(':id')
-    update(): string {
-        return 'This action updates a specific user';
+
+    @Patch(':id')
+    update(@Param('id') id: Number): string {
+        return `This action updates a #${id} user`;
     }
+
 
     @Delete(':id')
-    destroy(): string {
-        return 'This action removes a specific user';
+    destroy(@Param('id') id: Number): string {
+        return `This action removes a #${id} user`;
     }
+
 
 }
