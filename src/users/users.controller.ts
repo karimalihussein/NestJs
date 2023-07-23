@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Post, Put, Patch, Req, Param, Body } from '@nestjs/common';
+import { Controller, Delete, Get, Post, Put, Patch, Req, Param, Body, HttpCode, HttpStatus } from '@nestjs/common';
 import { Request } from 'express';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
@@ -11,36 +11,39 @@ export class UsersController {
     private readonly users: UserEntity[] = [];
 
     @Get()
-    index(): UserEntity[] 
-    {
+    @HttpCode(HttpStatus.OK)
+    index(): UserEntity[] {
         return this.users;
     }
 
     @Post()
-    store(@Body() CreateUserDto: CreateUserDto) 
-    {
-        const user : UserEntity = {id: uuid(),...CreateUserDto};
+    @HttpCode(HttpStatus.CREATED)
+    store(@Body() CreateUserDto: CreateUserDto) {
+        const user: UserEntity = { id: uuid(), ...CreateUserDto };
         this.users.push(user);
         return user;
     }
 
     @Get(':id')
-    show(@Param('id') id: string) : UserEntity
-    {
+    @HttpCode(HttpStatus.OK)
+    show(@Param('id') id: string): UserEntity {
         return this.users.find(user => user.id === id);
     }
 
 
     @Patch(':id')
-    update(@Param('id') id: Number): string {
-        return `This action updates a #${id} user`;
+    @HttpCode(HttpStatus.ACCEPTED)
+    update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): UserEntity {
+        const user = this.users.find(user => user.id === id);
+        Object.assign(user, updateUserDto);
+        return user;
     }
-
 
     @Delete(':id')
-    destroy(@Param('id') id: Number): string {
-        return `This action removes a #${id} user`;
+    @HttpCode(HttpStatus.NO_CONTENT)
+    destroy(@Param('id') id: string): void {
+        const userIndex = this.users.findIndex(user => user.id === id);
+        this.users.splice(userIndex, 1);
     }
-
 
 }
