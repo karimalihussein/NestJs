@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Post, Put, Patch, Req, Param, Body, HttpCode, HttpStatus, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Delete, Get, Post, Put, Patch, Req, Param, Body, HttpCode, HttpStatus, ParseUUIDPipe, ValidationPipe } from '@nestjs/common';
 import { Request } from 'express';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
@@ -18,7 +18,7 @@ export class UsersController {
 
     @Post()
     @HttpCode(HttpStatus.CREATED)
-    store(@Body() CreateUserDto: CreateUserDto) {
+    store(@Body(ValidationPipe) CreateUserDto: CreateUserDto) {
         const user: UserEntity = { id: uuid(), ...CreateUserDto };
         this.users.push(user);
         return user;
@@ -33,7 +33,7 @@ export class UsersController {
 
     @Patch(':id')
     @HttpCode(HttpStatus.ACCEPTED)
-    update(@Param('id', ParseUUIDPipe) id: string, @Body() updateUserDto: UpdateUserDto): UserEntity {
+    update(@Param('id', ParseUUIDPipe) id: string, @Body(ValidationPipe) updateUserDto: UpdateUserDto): UserEntity {
         const user = this.users.find(user => user.id === id);
         Object.assign(user, updateUserDto);
         return user;
