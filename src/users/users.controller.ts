@@ -1,5 +1,7 @@
 import { Controller, Delete, Get, Post, Put, Patch, Req, Param, Body } from '@nestjs/common';
 import { Request } from 'express';
+import { CreateUserDto } from './dtos/create-user.dto';
+import { UpdateUserDto } from './dtos/update-user.dto';
 
 @Controller('api/v1/users')
 export class UsersController {
@@ -32,8 +34,8 @@ export class UsersController {
     }
 
     @Post()
-    store(@Body() data: any) {
-        return data;
+    store(@Body() CreateUserDto: CreateUserDto) {
+        return CreateUserDto.name;
     }
 
     @Get(':id')
