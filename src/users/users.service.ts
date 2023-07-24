@@ -31,7 +31,11 @@ export class UsersService {
     }
 
     find(id: number): User {
-        return this.users.find(user => user.id === id);
+        const user = this.users.find(user => user.id === id);
+        if (!user) {
+            throw new Error('User not found');
+        }
+        return user;
     }
 
     create(createUserDto: CreateUserDto): User {
