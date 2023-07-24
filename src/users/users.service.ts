@@ -23,7 +23,10 @@ export class UsersService {
         }
     ]
 
-    findAll(): User[] {
+    findAll(name?: string): User[] {
+        if (name) {
+            return this.users.filter(user => user.name === name);
+        }
         return this.users;
     }
 
